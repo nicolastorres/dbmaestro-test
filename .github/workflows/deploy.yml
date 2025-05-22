@@ -38,8 +38,8 @@ jobs:
         run: |
           git config --local user.name "github-actions"
           git config --local user.email "nicolas.torres.ar@gmail.com"
-          git add folder/task2/package2_1.zip
-          git commit -m "add script.2_1.txt to package2_1.zip"
+          git add folder/task2/${{ inputs.package }}_1.zip
+          git commit -m "add script.2_1.txt to ${{ inputs.package }}_1.zip"
       - name: push changes
         run: |
           git push origin main
