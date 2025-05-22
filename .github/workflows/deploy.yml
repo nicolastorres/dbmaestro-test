@@ -16,7 +16,7 @@ jobs:
       - name: open zip
         run: |
           sudo apt-get install unzip
-          unzip -o folder/task1/package2.zip
+          unzip -o folder/task2/package2.zip
       - name: create file
         run: |
           echo "Hello, World!" > script.2_1.txt	
