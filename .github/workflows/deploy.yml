@@ -1,12 +1,15 @@
 name: Deploy via SSH
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package name'
+        required: true
+
 permissions:
   contents: write
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-24.04
@@ -18,17 +21,20 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
-      - name: open zip
+      - name: open zip if exists
         run: |
           sudo apt-get install unzip
-          unzip -o folder/task2/package2.zip
-      - name: create file
-        run: |
-          echo "Hello, World!" > script.2_1.txt	
-      - name: add the file to the zip
-        run: |
-          zip folder/task2/package2_1.zip script.2_1.txt script2.txt
-      - name: comit changes
+          if [ -f folder/task2/${{ inputs.package }}.zip ]; then
+            echo "File exists"
+            unzip -o folder/task2/${{ inputs.package }}.zip
+            echo "Hello, World!" > script.2_1.txt
+            zip folder/task2/${{ inputs.package }}_1.zip script.2_1.txt script2.txt
+          else
+            echo "File does not exist"
+            echo "Hello, World!" > script.2_1.txt
+            zip folder/task2/${{ inputs.package }}_1.zip script.2_1.txt
+          fi
+      - name: copy files      
         run: |
           git config --local user.name "github-actions"
           git config --local user.email "nicolas.torres.ar@gmail.com"
