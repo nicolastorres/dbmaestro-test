@@ -1,0 +1,35 @@
+name: Deploy via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: open zip
+        run: |
+          sudo apt-get install unzip
+          unzip -o folder/task1/package2.zip
+      - name: create file
+        run: |
+          echo "Hello, World!" > script.2_1.txt	
+      - name: add the file to the zip
+        run: |
+          zip folder/task2/package2_1.zip script.2_1.txt script2.txt
+      - name: comit changes
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "nicolas.torres.ar@gmail.com"
+          git add folder/task2/package2_1.zip
+          git commit -m "add script.2_1.txt to package2_1.zip"
+      - name: push changes
+        run: |
+          git push origin main
+    
